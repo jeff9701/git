@@ -1,0 +1,17 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from google.colab import drive
+drive.mount("/content/drive/")
+path="/content/drive/MyDrive/ld00002yac.csv"
+data=pd.read_csv(path)
+x=data.iloc[:,1]
+new_data = data["average temperture"]
+y=(data.iloc[:,1].sum())/len(new_data)
+plt.xlabel("temperature(℃)")
+plt.ylabel("time")
+plt.title("average temperature in the past 55 years")
+plt.hist(x)
+plt.plot(y,0,'r--o',label="average")
+plt.legend()
+plt.show()
