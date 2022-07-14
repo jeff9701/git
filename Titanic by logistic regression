@@ -33,6 +33,7 @@ dummy_test=dummy_data.iloc[891:,:]
 from sklearn.preprocessing import StandardScaler
 scaler=StandardScaler()
 sc_x=scaler.fit_transform(dummy_train)
+sc_test_data_x=scaler.fit_transform(dummy_test)
 
 logistic = LogisticRegression()
 logistic.fit(sc_x,y)
