@@ -1,0 +1,37 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from google.colab import drive
+drive.mount("/content/drive/")
+path1="/content/drive/MyDrive/python資料科學與機械學習/train (1).csv"
+path2="/content/drive/MyDrive/python資料科學與機械學習/test.csv"
+train_data=pd.read_csv(path1)
+test_data=pd.read_csv(path2)
+test_ids = test_data["PassengerId"]
+def clean(data):
+  data=data.drop(["PassengerId","Cabin","Name"],axis=1)
+  data.fillna(value=0,inplace=True)
+  return data
+train_data=clean(train_data)
+test_data=clean(test_data)
+x=train_data.iloc[:,:-1]
+y=train_data.iloc[:,-1]
+concat_data=pd.concat([x,test_data],axis=0)
+dummy_data=pd.get_dummies(concat_data)
+dummy_train=dummy_data.iloc[:8693,:]
+dummy_test=dummy_data.iloc[8693:,:]
+from sklearn.preprocessing import StandardScaler
+scaler=StandardScaler()
+sc_x=scaler.fit_transform(dummy_train)
+sc_test_data_x = scaler.transform(dummy_test)
+logistic = LogisticRegression()
+logistic.fit(sc_x,y)
+sc_test_data_x = scaler.transform(dummy_test)
+logistic = LogisticRegression()
+logistic.fit(sc_x,y)
+predictions = logistic.predict(sc_test_data_x)
+submission_data = pd.DataFrame({"PassengerId":test_ids.values,"Transported":predictions})
+submission_data.to_csv("submission.csv", index=False)
+submission_data
